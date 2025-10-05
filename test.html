@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trung Thu</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Định nghĩa font chữ */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #1c0f22; /* Màu nền tím than đậm cho đêm trăng */
+            overflow: hidden; 
+            position: relative;
+        }
+
+        /* Keyframes cho hiệu ứng Lồng Đèn Bay */
+        @keyframes fly-up {
+            0% { 
+                transform: translateY(0) rotate(0deg) scale(1); 
+                opacity: 0.9; 
+            }
+            100% { 
+                transform: translateY(-100vh) rotate(45deg) scale(0.6); 
+                opacity: 0; 
+            }
+        }
+
+        .flying-lantern {
+            position: fixed; 
+            bottom: -50px; 
+            pointer-events: none;
+            /* Lồng đèn chỉ là biểu tượng, màu sáng */
+            color: #ffebb7; /* Màu sáng của đèn */
+            white-space: nowrap;
+            animation: fly-up linear;
+            text-shadow: 0 0 8px #ff7f50; /* Ánh sáng lồng đèn */
+            z-index: 15; /* Nằm trên cả cây và nội dung */
+            font-size: 3.5rem; /* Kích thước lồng đèn vừa phải */
+        }
+
+        .greeting-box {
+            background-color: #00000066; /* Nền tối nhẹ để chữ dễ đọc */
+            border: 1px solid #ffb7c5;
+        }
+
+        /* Mặt Trăng Rằm */
+        #moon {
+            position: absolute;
+            top: 5vh;
+            right: 5vw;
+            width: 150px; /* Kích thước mặt trăng */
+            height: 150px;
+            background-color: #fff8e1; /* Màu trắng ngà của trăng */
+            border-radius: 50%;
+            /* Tạo hiệu ứng phát sáng */
+            box-shadow: 
+                0 0 40px #fff8e1, /* Lớp sáng sát */
+                0 0 100px #ffcc80, /* Lớp sáng xa màu vàng ấm */
+                0 0 150px #ffcc80; 
+            z-index: 5; /* Nằm dưới lồng đèn và thẻ chúc mừng */
+        }
+    </style>
+</head>
+<body>
+    <!-- Mặt Trăng Rằm -->
+    <div id="moon" class="hidden sm:block"></div> <!-- Ẩn trên mobile nhỏ để tránh che nội dung -->
+
+        <!-- Lời Chúc (hiển thị dưới cây) -->
+        <div class="greeting-box p-4 rounded-xl shadow-xl mt-4">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-pink-300 tracking-wider">
+                Chúc Kim Cheese Trung Thu Vui Vẻ
+            </h1>
+            <p class="text-lg text-gray-100 mt-2">
+                
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Các biểu tượng Lồng đèn và ánh sáng
+        const lanterns = [
+            "Chúc Kchi tất cả trừ vất vả","🏮", "Phải cười nhiều hơn","🏮", "Không được khóc một mình","🏮","⭐","✨","💫", "Nhớ giữ gìn sức khoẻ", "Bớt OVTK lại", "Phải yêu thương bản thân", "🌙", "🌕", "🕯️", "Không được buồn"
+        ];
+
+        /**
+         * Tạo và thêm một lồng đèn bay lên màn hình.
+         */
+        function createFlyingLantern() {
+            const icon = lanterns[Math.floor(Math.random() * lanterns.length)];
+            const lanternElement = document.createElement('div');
+            lanternElement.textContent = icon;
+            
+            // Randomize starting position (từ 10% đến 90% chiều rộng màn hình)
+            const randomX = Math.random() * 80 + 10; 
+            
+            // Randomize duration (tốc độ bay)
+            const duration = 7 + Math.random() * 5; // 7s đến 12s, bay chậm hơn
+            
+            // Randomize font size
+            const size = 1.2 + Math.random() * 0.8; // 1.2rem đến 2rem
+            
+            lanternElement.className = 'flying-lantern';
+            lanternElement.style.cssText = `
+                left: ${randomX}vw;
+                font-size: ${size}rem;
+                animation-duration: ${duration}s;
+                animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            `;
+
+            document.body.appendChild(lanternElement);
+
+            // Xóa phần tử sau khi animation kết thúc để giải phóng bộ nhớ
+            setTimeout(() => {
+                lanternElement.remove();
+            }, duration * 1000);
+        }
+
+        /**
+         * Bắt đầu vòng lặp tạo lồng đèn bay liên tục.
+         */
+        function startWishingLoop() {
+            // Tạo lồng đèn mới mỗi 200-500ms
+            setInterval(createFlyingLantern, 200 + Math.random() * 300);
+        }
+        
+        // Bắt đầu vòng lặp sau khi trang được tải hoàn tất
+        window.onload = startWishingLoop;
+    </script>
+</body>
+</html>
